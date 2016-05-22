@@ -1,0 +1,349 @@
+@call file=tall/libs/utils
+[bg_new name="background" storage="room_tall"]
+[bg_show name="background"]
+
+;メッセージ表示
+[showmessage]
+[call file=tall/system target="*system_setting_buttons"]
+[text_new name=_sp_chara_name layer=ui x="-186" y=-250 val="" color="DDFF00" fontsize=30 anchor="MiddleLeft"]
+[text_show name="_sp_chara_name"] 
+
+
+;---------------キャラ定義
+
+@tag_default tag="chara"
+[chara_new name="yuko" storage="chara" jname="ゆうこ" scale=2 jcolor=FF77FF]
+[chara_new name="mai" storage="kiri" jname="麻衣" scale=2 jcolor=22FFFF]
+@reset_tag_default
+
+;ゆうこの表情登録
+[chara_face name="yuko" face="angry" storage=chara_a ]
+[chara_face name="yuko" face="komaru" storage=chara_k ]
+[chara_face name="yuko" face="warau" storage=chara_w ]
+
+;麻衣の表情登録
+[chara_face name="mai" face="angry" storage=kiri_a ]
+[chara_face name="mai" face="komaru" storage=kiri_k ]
+
+;選択肢1
+@button_new name="sentaku_1" storage="button" anchor="MiddleCenter" val="(怪しいな…)" x=0 y=100
+;選択肢2
+@button_new name="sentaku_2" storage="button" anchor="MiddleCenter" val="（でも…）" x=0 y=100
+;クロ
+@button_new name="black" storage="button" anchor="MiddleCenter" val="クロ" x=0 y=100
+;シロ
+@button_new name="white" storage="button" anchor="MiddleCenter" val="シロ" x=0 y=100
+
+@chara_pos name="yuko" x=0 y=-0.7
+@chara_pos name="mai" x=-5 y=-0.7
+
+@show name=yuko
+
+[playbgm wait=false time=1 storage="music"]
+
+[autostart]
+
+[messageframefront]
+#取調官
+初めまして、取調官の__です。今回なぜここに呼ばれたのかはお分かりですか？[p]
+
+[messageframeback]
+#山岡
+[storyenemy hamu="いや、分かんないっす。"][p]
+
+[messageframefront]
+#取調官
+そうか、なら順を追って説明をする…[p]
+事件は殺人事件。[p]
+マンションの一室である女性が殺害されました。[p]
+死因は撲殺、殺害された場所は被害者・片桐絵美の部屋。死亡推定時刻は23時頃、先日の金曜日の事です。[p]
+では片桐さんの件でお話を伺いたいんですが、まず…[p]
+片桐さんが殺害された日の夜、どこで何をなさってましたか？[p]
+
+[messageframeback]
+#山岡
+[storyenemy hamu="その日は…ファミレスでメシ食いました。"][p]
+
+[messageframefront]
+#取調官
+実はそれなんですが、その店に確認を取ったところですね、山岡さんがいらっしゃったという証言が取れなかったんですよねぇ…本当にいらっしゃったんですか？[p]
+
+[chara_mod name="yuko" face="warau"]
+[messageframeback]
+#山岡
+[storyenemy hamu="いや居たっすよ、店員が覚えてなかっただけじゃないっすか"][p]
+[chara_mod name="yuko" face="default"]
+
+@show name=yuko
+
+[messageframefront]
+#取調官
+なるほど、では次の質問に移りますね[p]
+山岡さん、あなたよく片桐さんのお宅で食事をなさっていたようですけど、最後に彼女のお宅に行ったのはいつですか？[p]
+
+[messageframeback]
+#山岡
+[storyenemy hamu="事件の日の…3日前っす"][p]
+
+[messageframefront]
+#取調官
+その時は何を？[p]
+
+#山岡
+[storyenemy hamu="メシっす"][p]		
+		
+#取調官		
+なるほど、ではいつもと変わったところなどは？[p]
+		
+#山岡
+[storyenemy hamu="別にいつも通りっすよ"][p]		
+		
+#取調官		
+分かりました、ところで…あなたと片桐さんがお会いになる日は、平日が多いですよね、特に金曜日。[p]
+		
+#山岡
+[storyenemy hamu="予定が合うだけっすよ、別に深い意味は無いっす"][p]				
+		
+#取調官		
+では事件当日はなぜ片桐さんのお宅へ向かわず、外食をなさったんですか？[p]
+		
+#山岡
+[storyenemy hamu="別にそんなの俺の勝手じゃないっすか、たまたまっすよ、たまたま"][p]						
+		
+#取調官		
+へぇ…そうですかぁ…[p]
+		
+#山岡
+[storyenemy hamu="何なんですか、俺を疑ってるんすか？"][p]								
+
+;ボタンの表示
+@button_show name="sentaku_1"
+
+[wait time=3]
+
+[evt name="sentaku_1" target="*answer_1" ]
+
+;@jump target=*answer_2
+
+*answer_1
+
+@button_remove name="sentaku_1"
+
+#取調官		
+いやぁ、自分はそんな都合よく偶然が重なるとは思いませんけどねぇ…[p]
+		
+#山岡	
+;flag1
+[storyenemy hamu="いや、本当っすよ。たまたまなんすよ、たまたま！！"][p]	
+
+@jump target=*main_story
+
+*answer_2
+
+@button_remove name="sentaku_1"
+
+#取調官	
+いやぁ、そういうわけでは無いんですよ…[p]
+
+@jump target=*main_story
+
+*main_story
+
+#取調官		
+では次の質問ですが、あなたと片桐さんとのご関係はなんでしょう？[p]
+
+#山岡
+[storyenemy hamu="彼女っすよ。"][p]
+		
+#取調官		
+いつ頃からお付き合いされてるんですか？[p]
+		
+#山岡	
+[storyenemy hamu="大体半年前くらいからっすね"][p]
+			
+#取調官		
+そうですか、いやね。彼女他にお付き合いしている方がいらっしゃったみたいなんですけど、ご存知でしたか？[p]
+		
+#山岡
+[storyenemy hamu="…いや、初耳っす"][p]
+				
+#取調官		
+なんでも、同じ会社の同僚の方とお付き合いをなさっていたそうですよ[p]
+		
+#山岡		
+[storyenemy hamu="それって、マジなんすか？"][p]
+		
+#取調官		
+彼女の友人の方がおっしゃっていましてね、その相手の方にも確認を取りましたが、本当にお付き合いなさっていたようですね[p]
+		
+#山岡		
+[storyenemy hamu="そっすか、でも、それがどうかしたんすか"][p]
+		
+#取調官		
+ご存知で無いならお伝えしたほうがよろしいかと思いましてねぇ。浮気が原因で殺人、なんてのもありがちな動機のひとつなのでね。[p]
+		
+#山岡	
+[storyenemy hamu="いや俺は知らなかったんすよ、そもそも動機なんてあるわけないじゃないっすか！"][p]	
+		
+#取調官		
+なるほど……[p]
+
+;ボタンの表示
+@button_show name="sentaku_2"
+
+[evt name="sentaku_2" target="*answer_3" ]
+
+@jump target=*answer_4
+
+*answer_4
+#取調官	（・・・こいつは本当にやってないのか？もし浮気を知らなかったなら、動機は存在しないが。)[p]									
+(だがファミレスのアリバイは無いようなものだな、何か言えない理由でもあるのか…？	)[p]			
+(だとしたらこいつは・・・）[p]	
+	
+[evt name="black" target="*black" ]
+[evt name="white" target="*white" ]
+
+*black
+#取調官	
+・・・あなたしかいないんですよねぇ[p]	
+		
+#山岡	
+[storyenemy hamu="は？"][p]	
+		
+#取調官	
+あなたが現場にいた痕跡が見つかっています、その他のことも含めてあなたが犯人であるとしか考えられません	。[p]
+;↑まだ固まってない
+	
+#山岡
+[storyenemy hamu="なんだよそれ！"][p]			
+		
+#取調官	
+山岡修介、あなたを逮捕します。[p]	
+		
+#山岡	
+[storyenemy hamu="ふざけんなよ！ちゃんと証拠だせよ！"][p]			
+				
+*white
+#取調官	
+本日はご協力ありがとうございました、もうお帰り頂いて結構ですよ。[p]
+	
+#山岡
+[storyenemy hamu="そっすか、刑事さんお疲れっす"][p]				
+		
+#取調官	
+"その後、捜査は難航した。未だ犯人の目星はついていない
+このまま事件は迷宮入りしてしまうのだろうか
+もしかしたら犯人は山岡だったのか・・・？"[p]
+
+*answer_3
+#取調官		
+でも彼女が浮気してしまったのは、仕方ないことですよね？[p]
+		
+#山岡
+[storyenemy hamu="どういう意味っすか"][p]		
+		
+#取調官		
+いやね、いい歳にもなってフリーターの男と、会社の同僚が身近にいたら、同僚のほうに気が行くのも仕方が無いことですもんね。[p]
+		
+#山岡	
+[storyenemy hamu="ハァ？なんなんすか！"][p]			
+
+#取調官		
+だからね、彼女が浮気しちゃっても仕方ない。[p]
+
+[messageframeback]		
+#山岡
+[storyenemy hamu="なんなんだよアンタ、喧嘩売ってるんすか？"][p]
+
+[messageframefront]		
+#取調官
+アナタそれに気がついて、彼女を殺しちゃったんじゃないの？[p]
+
+[messageframeback]	
+#山岡	
+[storyenemy hamu="適当なこと言ってんじゃねぇ！あることないこと言われるくらいなら俺帰るっすよ"][p]
+;(卓ドンアクション)
+
+[messageframefront]
+#取調官
+お前、彼女が浮気してるって知ってたんじゃないのか？[p]
+
+[messageframeback]		
+#山岡
+[storyenemy hamu="だから知らねぇっつってんだろ！"][p]
+
+[messageframefront]		
+#取調官		
+お前はあの日、飯を食いに彼女の部屋に行った。そうだろ？[p]
+
+[messageframeback]		
+#山岡		
+[storyenemy hamu="行ってねぇよ！証拠はあんのかよ！！"][p]
+
+[messageframefront]		
+#取調官		
+彼女の携帯にお前とのやり取りが残ってんだよ！[p]
+
+[messageframeback]	
+#山岡	
+[storyenemy hamu="嘘付け、ハッタリだ！そんなのあるわけねぇ！"][p]	
+
+[messageframefront]		
+#取調官		
+それがあるんだよ、犯人が履歴を消すなんてこっちは分かってる！警察はな、履歴の復元くらい簡単にできるんだよ！[p]
+	
+[messageframeback]	
+#山岡		
+[storyenemy hamu="俺は履歴なんて消してねぇ！誰かが俺をはめようとしてんだよ！"][p]	
+
+[messageframefront]		
+#取調官		
+今更そんな言い訳が通じると思うなよ、[p]
+いいか？携帯には被害者が浮気してる証拠があったはずだ、お前はそれを見て口論になった、そうだろ？[p]
+
+[messageframeback]		
+#山岡
+[storyenemy hamu="うるせぇうるせぇ！デタラメなこと言ってるんじゃねぇ！"][p]			
+
+[messageframefront]
+#取調官		
+そして、カッとなったお前は彼女の頭を殴った！違うか？[p]
+
+[messageframeback]		
+#山岡
+[storyenemy hamu="殴ってなんかいねぇーっての！"][p]					
+
+[messageframefront]		
+#取調官		
+凶器にお前の指紋がついてんだよ、どう考えてもこれはおかしいだろ！[p]
+	
+[messageframeback]		
+#山岡		
+[storyenemy hamu="ハァ？おかしくねぇよ、そのビール瓶は俺が持ってったんだからよ！"][p]					
+
+[messageframefront]		
+#取調官		
+……おい、お前。なんで凶器がビール瓶だって知ってんだ[p]
+
+[messageframeback]		
+#山岡
+[storyenemy hamu="…は？だ、だってお前が言ったんじゃ…"][p]					
+	
+[messageframefront]		
+#取調官		
+言ってないぞ、一言も。それに凶器がビール瓶だってことは報道もされていない。[p]
+
+[messageframeback]		
+#山岡
+[storyenemy hamu="嘘だ…そんなことが…あるわけ…"][p]					
+
+[messageframefront]		
+#取調官		
+つまりお前がやった、そういうことになるな？[p]
+	
+[messageframeback]		
+#山岡
+[storyenemy hamu="…………そ…そうっす…。"][p]		
+
+
+
